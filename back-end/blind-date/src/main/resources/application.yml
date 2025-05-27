@@ -1,0 +1,27 @@
+server:
+  port: 54920
+
+spring:
+  datasource:
+    url: jdbc:mysql://121.40.144.4:3306/blinddate?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: blinddate
+    password: Nls_040718yyds
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size: 5GB
+      max-request-size: 10GB
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.example.blinddate.entity
+
+Logging:
+  level:
+    com.example.blinddate: debug
+
+
+images:
+  path: /www/wwwroot/121.40.144.4/SpringBootProject/blind-date/target/img/
+#  path: D://blind-date/blind-date/img/

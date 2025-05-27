@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blinddate.mapper.PersonalInformationMapper">
+    <select id="findAll" resultType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information;
+    </select>
+
+    <select id="findAllPro" resultType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information where gender != #{gender};
+    </select>
+
+    <insert id="add" parameterType="com.example.blinddate.entity.PersonalInformation">
+        insert into personal_information(head_image, personal_id, nick_name, name, age, gender, household_registration, hobby, education_background,
+                                                    occupation, salary_yearly, car_and_house_status, simple_introduction)
+        values (#{head_image}, #{personal_id}, #{nick_name}, #{name}, #{age}, #{gender}, #{household_registration}, #{hobby}, #{education_background},
+                #{occupation}, #{salary_yearly}, #{car_and_house_status}, #{simple_introduction});
+    </insert>
+
+    <insert id="addHeadImage" parameterType="com.example.blinddate.entity.PersonalInformation">
+        insert into personal_information(id, head_image) values(#{id}, #{head_image}) on duplicate key update head_image = #{head_image};
+    </insert>
+
+    <update id="mod" parameterType="com.example.blinddate.entity.PersonalInformation">
+        update personal_information set head_image = #{head_image}, personal_id = #{personal_id},
+                                                   nick_name = #{nick_name}, name = #{name},
+                                                   age = #{age}, household_registration = #{household_registration},
+                                                   hobby=#{hobby}, education_background = #{education_background}, occupation = #{occupation},
+                                                   salary_yearly=#{salary_yearly}, car_and_house_status = #{car_and_house_status},
+                                                   simple_introduction = #{simple_introduction} where id = #{id};
+    </update>
+
+    <insert id="addOrMod" parameterType="com.example.blinddate.entity.PersonalInformation">
+        insert into personal_information(id, head_image, personal_id, nick_name, name, age, gender, household_registration, hobby, education_background,
+                                                    occupation, salary_yearly, car_and_house_status, simple_introduction)
+        values (#{id}, #{head_image}, #{personal_id}, #{nick_name}, #{name}, #{age}, #{gender}, #{household_registration}, #{hobby}, #{education_background},
+                #{occupation}, #{salary_yearly}, #{car_and_house_status}, #{simple_introduction}) on duplicate key update head_image = #{head_image}, personal_id = #{personal_id},
+                                nick_name = #{nick_name}, name = #{name},
+                                age = #{age}, gender = #{gender}, household_registration = #{household_registration},
+                                hobby=#{hobby}, education_background = #{education_background}, occupation = #{occupation},
+                                salary_yearly=#{salary_yearly}, car_and_house_status = #{car_and_house_status},
+                                simple_introduction = #{simple_introduction};
+    </insert>
+
+    <delete id="delete" parameterType="com.example.blinddate.entity.PersonalInformation">
+        delete from personal_information where id = #{id};
+    </delete>
+
+    <select id="hasGenerateId" resultType="int">
+        select personal_id is null or personal_id = '' from personal_information where id = #{id};
+    </select>
+
+    <select id="recommendPeople" parameterType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information where household_registration like #{household_registration} and gender != #{gender};
+    </select>
+
+    <select id="recommendPeoplePro" parameterType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information where household_registration like #{household_registration} and gender != #{gender} limit #{pageNum}, #{pageSize};
+    </select>
+
+    <insert id="addGenerateId" parameterType="com.example.blinddate.entity.PersonalInformation">
+        insert into personal_information(personal_id) values(#{personal_id}) on duplicate key update personal_id = #{personal_id};
+    </insert>
+
+    <select id="likeFindAll" parameterType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information where nick_name like concat('%', #{nick_name},'%') limit #{pageNum}, #{pageSize};
+    </select>
+
+    <select id="findOrderData" resultType="com.example.blinddate.entity.PersonalInformation">
+        select * from personal_information where gender != #{gender} limit #{pageNum}, #{pageSize};
+    </select>
+</mapper>

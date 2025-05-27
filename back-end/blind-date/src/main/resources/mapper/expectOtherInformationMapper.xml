@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blinddate.mapper.ExpectOtherInformationMapper">
+    <select id="findAll" resultType="com.example.blinddate.entity.ExpectOtherInformation">
+        select * from expect_other_information;
+    </select>
+
+    <insert id="add" parameterType="com.example.blinddate.entity.ExpectOtherInformation">
+        insert into expect_other_information(request_people, age, household_registration, hobby, education_background,
+                                                    occupation, salary_yearly, car_and_house_status)
+        values (#{request_people}, #{age}, #{household_registration}, #{hobby}, #{education_background},
+                #{occupation}, #{salary_yearly}, #{car_and_house_status});
+    </insert>
+
+    <update id="mod" parameterType="com.example.blinddate.entity.ExpectOtherInformation">
+        update expect_other_information set request_people = #{request_people}, age = #{age}, household_registration = #{household_registration},
+                                                   hobby = #{hobby}, education_background = #{education_background}, occupation = #{occupation},
+                                                   salary_yearly = #{salary_yearly}, car_and_house_status = #{car_and_house_status}
+                                                   where id = #{id};
+    </update>
+
+    <insert id="addOrMod" parameterType="com.example.blinddate.entity.ExpectOtherInformation">
+        insert into expect_other_information(id, request_people, age, household_registration, hobby, education_background,
+                                                    occupation, salary_yearly, car_and_house_status)
+        values (#{id}, #{request_people}, #{age}, #{household_registration}, #{hobby}, #{education_background},
+                #{occupation}, #{salary_yearly}, #{car_and_house_status}) on duplicate key update
+            request_people = #{request_people}, age = #{age}, household_registration = #{household_registration},
+                                hobby = #{hobby}, education_background = #{education_background}, occupation = #{occupation},
+                                salary_yearly = #{salary_yearly}, car_and_house_status = #{car_and_house_status};
+    </insert>
+
+    <delete id="delete" parameterType="com.example.blinddate.entity.ExpectOtherInformation">
+        delete from expect_other_information where id = #{id};
+    </delete>
+
+    <select id="likeFindAll" parameterType="com.example.blinddate.entity.ExpectOtherInformation">
+            select * from personal_information left join expect_other_information on personal_information.id = expect_other_information.id
+                     where expect_other_information.age like #{age} or expect_other_information.household_registration like #{household_registration} limit #{pageNum}, #{pageSize};
+    </select>
+
+    <select id="findOrderData" resultType="com.example.blinddate.entity.ExpectOtherInformation">
+        select * from expect_other_information limit #{pageNum}, #{pageSize};
+    </select>
+</mapper>

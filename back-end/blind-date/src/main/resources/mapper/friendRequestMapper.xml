@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blinddate.mapper.FriendRequestMapper">
+    <select id="findAll" resultType="com.example.blinddate.entity.FriendRequest">
+        select * from friend_request;
+    </select>
+
+    <insert id="add" parameterType="com.example.blinddate.entity.FriendRequest">
+        insert into friend_request(request_people_id, receive_people_id, status) values (#{request_people_id}, #{receive_people_id}, #{status});
+    </insert>
+
+    <insert id="addStatus" parameterType="com.example.blinddate.entity.FriendRequest">
+        insert into friend_request(status) values (#{status});
+    </insert>
+
+    <update id="mod" parameterType="com.example.blinddate.entity.FriendRequest">
+        update friend_request set request_people_id = #{request_people_id}, receive_people_id = #{receive_people_id}, status = #{status} where id = #{id};
+    </update>
+
+    <update id="modStatus" parameterType="com.example.blinddate.entity.FriendRequest">
+        update friend_request set status = #{status} where id = #{id};
+    </update>
+
+    <insert id="addOrMod" parameterType="com.example.blinddate.entity.FriendRequest">
+        insert into friend_request(id, request_people_id, receive_people_id, status) values (#{id}, #{request_people_id}, #{receive_people_id}, #{status})
+            on duplicate key update request_people_id = #{request_people_id}, receive_people_id = #{receive_people_id}, status = #{status};
+    </insert>
+
+    <insert id="addOrModStatus" parameterType="com.example.blinddate.entity.FriendRequest">
+        insert into friend_request(id, status) values (#{id}, #{status})
+            on duplicate key update status = #{status};
+    </insert>
+
+    <delete id="delete" parameterType="com.example.blinddate.entity.FriendRequest">
+        delete from friend_request where id = #{id};
+    </delete>
+
+    <select id="getMyFriendInformationTableID" resultType="Integer">
+        select count(*) from friend_request where status = '验证通过';
+    </select>
+
+    <select id="likeFindAll" parameterType="com.example.blinddate.entity.FriendRequest">
+        select * from friend_request where request_people_id like concat('%', #{request_people_id},'%') and receive_people_id like concat('%', #{receive_people_id},'%') limit #{pageNum}, #{pageSize};
+    </select>
+
+    <select id="findOrderData" resultType="com.example.blinddate.entity.FriendRequest">
+        select * from friend_request limit #{pageNum}, #{pageSize};
+    </select>
+</mapper>
